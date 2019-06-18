@@ -1,15 +1,16 @@
+const svelteVersion = options.version || 'v3';
 const fs = require('fs');
 const path = require('path');
 const relative = require('require-relative');
-const { version } = require('svelte/package.json');
+const { version } = require('svelte-' + svelteVersion + '/package.json');
 const { createFilter } = require('rollup-pluginutils');
 const { encode, decode } = require('sourcemap-codec');
 
 const major_version = +version[0];
 
 const { compile, preprocess } = major_version >= 3
-	? require('svelte/compiler.js')
-	: require('svelte');
+	? require('svelte-' + svelteVersion + '/compiler.js')
+	: require('svelte-' + svelteVersion);
 
 function sanitize(input) {
 	return path
@@ -133,10 +134,10 @@ module.exports = function svelte(options = {}) {
 
 	if (major_version >= 3) {
 		fixed_options.format = 'esm';
-		fixed_options.sveltePath = options.sveltePath || 'svelte';
+		fixed_options.sveltePath = options.sveltePath || 'svelte-' + svelteVersion;
 	} else {
 		fixed_options.format = 'es';
-		fixed_options.shared = require.resolve(options.shared || 'svelte/shared.js');
+		fixed_options.shared = require.resolve(options.shared || 'svelte-' + svelteVersion + '/shared.js');
 	}
 
 	// handle CSS extraction
