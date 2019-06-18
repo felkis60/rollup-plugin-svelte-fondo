@@ -24,6 +24,7 @@ const pluginOptions = {
 	extensions: true,
 	emitCss: true,
 	preprocess: true,
+	version: true,
 
 	// legacy — we might want to remove/change these in a future version
 	onwarn: true,
